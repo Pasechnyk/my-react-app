@@ -13,6 +13,9 @@ const { Header, Sider, Content } = Layout;
 
 
 const ContainerDefault : React.FC = () => {
+
+    // Коментування
+    // Керування розгортанням/згортанням бічної панелі
     const [collapsed, setCollapsed] = useState(false);
     const {
         token: { colorBgContainer, borderRadiusLG },

@@ -7,13 +7,14 @@ import {APP_ENV} from "../../../env";
 import {Link} from "react-router-dom";
 
 const CategoriesListPage : React.FC = () => {
+
     const [list, setList] = useState<ICategoryItem[]>(
         [
         ]
     );
-
     const imagePath = `${APP_ENV.BASE_URL}/upload/150_`;
 
+    // Вигляд колонок у таблиці з Ant дизайном
     const columns : ColumnsType<ICategoryItem> = [
         {
             title: "#",
@@ -34,11 +35,16 @@ const CategoriesListPage : React.FC = () => {
         },
     ];
 
+    // Коментування
+    // Витяг даних з серверу
     useEffect(()=>{
         //console.log("useEffect working");
+        // Надсилаємо запит GET до вказаної API адреси
         http_common.get("/api/categories")
             .then(resp=> {
+                // Відображаємо результат запиту Axios
                 console.log("Axios result", resp.data);
+                // Оновлюємо стан з отриманими даними
                 setList(resp.data);
             });
     },[]);
