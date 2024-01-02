@@ -33,7 +33,7 @@ const CategoriesListPage : React.FC = () => {
             });
     };
 
-    // Визначення стовпців редагування та видалення
+    // Дії редагування та видалення
     const actionColumns = {
         title: "Дії",
         render: (_text: string, record: ICategoryItem) => (
