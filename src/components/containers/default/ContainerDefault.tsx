@@ -44,7 +44,12 @@ const ContainerDefault : React.FC = () => {
                             {
                                 key: '3',
                                 icon: <UploadOutlined />,
-                                label: 'nav 3',
+                                label: <Link to={"/register"}>Реєстрація</Link>,
+                            },
+                            {
+                                key: '4',
+                                icon: <UploadOutlined />,
+                                label: <Link to={"/products"}>Список продуктів</Link>,
                             },
                         ]}
                     />
