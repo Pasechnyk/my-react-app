@@ -1,7 +1,8 @@
 //@ts-ignore
-import {Button, Divider, Form, Input, UploadFile, Alert, GetProp, UploadProps, Upload, Modal} from "antd";
+import {Button, Divider, Form, Input, UploadFile, Alert, GetProp, UploadProps, Upload, Modal, message} from "antd";
 import {useState} from "react";
 import { PlusOutlined } from '@ant-design/icons';
+import {RcFile} from "antd/es/upload/interface";
 
 const ProductCreatePage = () => {
 
@@ -11,7 +12,7 @@ const ProductCreatePage = () => {
     const [previewTitle, setPreviewTitle] = useState('');
     const [fileList, setFileList] = useState<UploadFile[]>([]);
 
-    const [errorMessage] = useState<string>("");
+    const [errorMessage , setErrorMessage] = useState<string>("");
 
     const getBase64 = (file: FileType): Promise<string> =>
         new Promise((resolve, reject) => {
@@ -43,12 +44,36 @@ const ProductCreatePage = () => {
         </button>
     );
 
+    // Викликаємо функцію валідації перед завантаженням файлу
+    const beforeUpload = (file: RcFile) => {
+        // Перевіряємо чи це картинка
+        const isImage = /^image\/\w+/.test(file.type);
+        if (!isImage) {
+            message.error('Оберіть файл зображення!');
+        }
+        // Перевіряємо чи файл менше 10мб
+        const isLt2M = file.size / 1024 / 1024 < 10;
+        if (!isLt2M) {
+            message.error('Розмір файлу не повинен перевищувать 10MB!');
+        }
+        // Інформуємо чи файл обраний та відповідає критеріям
+        console.log("is select", isImage && isLt2M);
+        return isImage && isLt2M;
+    };
+
 
     const onFinish = async (values: any) => {
         console.log('Success:', values);
         console.log("Select files", fileList);
+
+        // Перевірка на наявність файлів
+        if(fileList==null) {
+            setErrorMessage("Оберіть фото!");
+            return;
+        }
     }
 
+    // Вивід помилки при невдалому виконанні
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
@@ -59,7 +84,7 @@ const ProductCreatePage = () => {
 
     return (
         <>
-            <Divider>Додати продукт</Divider>
+            <Divider>Додати товар</Divider>
             {errorMessage && <Alert message={errorMessage} style={{marginBottom: "20px"}} type="error" />}
             <Form
                 name="basic"
@@ -72,14 +97,14 @@ const ProductCreatePage = () => {
                 <Form.Item<FieldType>
                     label="Назва"
                     name="name"
-                    rules={[{required: true, message: 'Вкажіть назву категорії!'}]}
+                    rules={[{required: true, message: 'Вкажіть назву товару!'}]}
                 >
                     <Input/>
                 </Form.Item>
 
                 <Upload
                     // action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-                    beforeUpload={() => false}
+                    beforeUpload={beforeUpload}
                     listType="picture-card"
                     fileList={fileList}
                     multiple
@@ -95,7 +120,7 @@ const ProductCreatePage = () => {
 
                 <Form.Item wrapperCol={{offset: 8, span: 16}}>
                     <Button type="primary" htmlType="submit">
-                        Додати
+                        Додати товар
                     </Button>
                 </Form.Item>
             </Form>
