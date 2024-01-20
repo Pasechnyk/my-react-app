@@ -51,6 +51,11 @@ const ContainerDefault : React.FC = () => {
                                 icon: <UploadOutlined />,
                                 label: <Link to={"/products"}>Список продуктів</Link>,
                             },
+                            {
+                                key: '5',
+                                icon: <UploadOutlined />,
+                                label: <Link to={"/create-product"}>Додати продукт</Link>,
+                            },
                         ]}
                     />
                 </Sider>
